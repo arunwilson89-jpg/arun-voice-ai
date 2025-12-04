@@ -86,7 +86,7 @@ export const useLiveSession = () => {
       processorRef.current = processor;
 
       const sessionPromise = ai.live.connect({
-        model: 'gemini-2.5-flash-native-audio-preview-09-2025',
+        model: 'gemini-2.0-flash-exp',
         config: {
           responseModalities: [Modality.AUDIO],
           systemInstruction: SYSTEM_INSTRUCTION,
@@ -190,16 +190,9 @@ export const useLiveSession = () => {
 
   const disconnect = useCallback(() => {
     if (sessionRef.current) {
-       // There isn't a direct .close() on the promise result easily exposed in types sometimes, 
-       // but typically we just tear down our side and the socket closes.
-       // However, the SDK might expose it on the resolved session.
        sessionRef.current.then(session => {
-         // Try checking if close exists, otherwise just rely on cleanup
-         // The current SDK documentation suggests using the session object to close, 
-         // but strictly speaking just killing the stream and cleanup is usually enough 
-         // to trigger server side timeout/close or we can implement explicit close if exposed.
-         // For this implementation, we will force cleanup which closes audio contexts.
-       });
+         session.close();
+       }).catch(e => console.error("Error closing session", e));
     }
     cleanup();
   }, [cleanup]);
