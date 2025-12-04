@@ -1,0 +1,7 @@
+{
+  "name": "Copy of Arun's Voice Resume",
+  "description": "An interactive voice-enabled resume for Arun Wilson Vadakkumcherry powered by Gemini Live API.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
